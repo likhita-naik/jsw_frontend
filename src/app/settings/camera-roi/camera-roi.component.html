@@ -1,0 +1,374 @@
+<div class="container-fluid dashboard-content">
+    <div class="page-header mb-3">
+        <h2>Camera Settings</h2>
+    </div>
+
+    <div class="row mt-3 mb-3" *ngIf="isCameraData" id="analytic">
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Camera Name</h5>
+                    <h3>{{cameraData[0].cameraname}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Plant</h5>
+                    <h3>{{cameraData[0].plant?cameraData[0].plant:'None'}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Area</h5>
+                    <h3>{{cameraData[0].plant?cameraData[0].area:'None'}}</h3>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="col-3">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Details</h5>
+                    <h4>--</h4>
+                </div>
+            </div>
+        </div> -->
+    </div>
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="">
+                <div class="row">
+                    <div class="col-4 p-2 border-bottom">
+                        <button class="me-2 btn success" (click)="AddNewROI()"> <fa-icon icon="plus" class="me-1"></fa-icon> Add Roi</button>
+                        <button class="me-2 btn danger" (click)="DeleteNewRoi()"> <fa-icon icon="trash" class="me-1"></fa-icon>Delete</button>
+                        </div>
+                        <div class="col-4 p-2 border-bottom">
+                            <button class="me-2 btn success" (click)="AddNewLine()">Add Line</button>
+                            <button class="me-2 btn success" (click)="AddNewArrow()">Add Arrow</button>
+                            <button class="me-2 btn danger" (click)="DeleteNewTCRoi()"> <fa-icon icon="trash" class="me-1"></fa-icon>Delete</button>
+
+                        </div>
+                        <div class="col-4 p-2 border-bottom">
+                        <div class="float-end">
+                            <button class="btn default me-2" *ngIf="isEdit" (click)="SaveEditedRoi()">Save
+                                changes</button>
+
+                            <button class="float-end btn primary" (click)="Back()">
+                                <fa-icon icon="angle-left" class="me-1"></fa-icon>
+                                Back</button>
+                        </div>
+                    </div>
+                    <!-- </div> -->
+                    <!-- <div class="col-1">
+                        <button class="btn default">Edit</button>
+                    </div> -->
+                   
+                    <!-- <div class="col-3 alert alert-secondary">Right click to confirm the roi</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mb-3">
+
+        <div class="col-12">
+            <div class="card card-body">
+                <div id="canvas-container" class="d-flex justify-content-center" #canvasContainer>
+                    <canvas id="canvasROI" class="canvas-class" height="auto" width="auto"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-12" *ngIf="allCameraData.length>0;else noRoi">
+            <!-- *ngIf="allCameraData.length>0" -->
+            <div class="card">
+                <div class="card-header"><b> ROI list</b></div>
+                <div class="">
+                    <table class="table">
+                        <thead>
+                            <tr style="text-align:center;">
+                                <th scope="col">SI no</th>
+                                <th scope="col">ROI name</th>
+                                <th scope="col">Class id</th>
+                                <th scope="col">
+                                    <fa-icon class="me-2" icon="cog"></fa-icon>Settings
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="text-align:center;" *ngFor="let ROIs of allCameraData;let i=index">
+                                <td>{{i+1}}</td>
+                                <td (dblclick)="AlterROIName(i)">{{ROIs.roi_name}}</td>
+                                <td>
+                                    <div class="" *ngFor="let label of ROIs.roi_data.label_name">
+                                        {{label}}
+                                    </div>
+                                </td>
+                                <td>
+                                    <!-- <button class="btn btn-sm default me-2" (click)="Edit(i)">Edit</button> -->
+                                    <button class="btn btn-sm danger me-2"
+                                        (click)="isDelete(i,deleteModal)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <ng-template #noRoi>
+            <div class="col-12">
+                <div class="card card-body">
+                    <!-- <div class="d-flex justify-content-center"> -->
+                    <div class="alert alert-info">
+                        <h5> No roi is added,clik add button to add ROI and right click to confirm the ROI</h5>
+                    </div>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </ng-template>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-body">
+                <div class="border">
+                    <ul class="list-group  list-group-flush">
+                        <li class="list-group-item">
+                            <div class="row">
+                            <div class="col-10">
+
+
+                                <div class="input-group">
+                                    <span class="row col-2">
+                                        <h5 class="">PPE:</h5>
+                                    </span>
+                                    <div class="" [formGroup]="ppeForm" style="pointer-events:all;">
+                                        <div class="form-check form-check-inline" id="custome" >
+                                            <input type="checkbox"  id="helmet" value="helmet" defaultValue=""
+                                                (change)="PPE_Config($event)" formControlName="helmet"
+                                                class="form-check-input">
+                                            <label for="helmet" class="form-check-label text-muted">Helmet</label>
+                                        </div>
+                                        <div class="form-check form-check-inline" id="custome">
+                                            <input type="checkbox" formControlName="vest" name="" value="vest"
+                                                (change)="PPE_Config($event)" defaultValue="vest" id="vest"
+                                                class="form-check-input">
+                                            <label for="vest" class="form-check-label text-muted">Vest</label>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <!-- <div class="col-2 float-end">
+                                <button class="btn default" (click)="savePpeConfig()">Save Changes</button>
+                            </div> -->
+                        </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="input-group">
+                                <span class="row col-sm-2">
+                                    <h5 class="">Vehicle:</h5>
+                                </span>
+                                <div class="" [formGroup]="vehicleForm">
+                                    <div class="form-check form-check-inline" id="custome">
+                                        <input type="checkbox" name="" id="type" defaultValue="type"
+                                            (change)="VehicleConfig($event)" formControlName="type"
+                                            class="form-check-input">
+                                        <label for="type" class="form-check-label text-muted">Type</label>
+                                    </div>
+                                    <div class="form-check form-check-inline" id="custome">
+                                        <input type="checkbox" name="" id="make" defaultValue="make"
+                                            formControlName="make" (change)="VehicleConfig($event)"
+                                            class="form-check-input">
+                                        <label for="make" class="form-check-label text-muted">Make</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="list-group-item">
+                            <div class="input-group">
+                                <span class="row col-sm-2">
+                                    <h5 class="">Person Crowd:</h5>
+                                </span>
+
+                                <div class="form-inline row" id="custome" [formGroup]="peopleCrowdForm">
+                                    <div class="col-sm-3">
+                                        <!-- <label for="min" class="form-label">Max</label> -->
+                                        <input type="number"
+                                            [ngClass]="{'is-invalid':(peopleCrowdForm.get('min').invalid)}"
+                                            formControlName="min" pattern="/\d+/" name="" min="0" id="min"
+                                            class="form-control" placeholder="min">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <!-- <label for="min" class="form-label">Min</label> -->
+                                        <input type="number"
+                                            [ngClass]="{'is-invalid':(peopleCrowdForm.get('max').invalid)}"
+                                            formControlName="max" pattern="/\d+/" name="" min="0" id="min"
+                                            class="form-control" placeholder="max">
+                                    </div>
+                                    <!-- <div class="form-check form-check-inline" id="custome">
+                                    <input type="checkbox" name="" id="max" class="form-check-input">
+                                    <label for="max" class="form-check-label">Vest</label>
+                                </div> -->
+                                </div>
+                            </div>
+                        </li>
+
+                        <li class="list-group-item">
+                            <div class="input-group">
+                                <span class="row col-sm-2">
+                                    <h5 class="">Vehicle Crowd:</h5>
+                                </span>
+
+                                <div class="form-inline row" id="custome" [formGroup]="vehicleCrowdForm">
+                                    <div class="col-sm-3">
+                                        <!-- <label for="min" class="form-label">Max</label> -->
+                                        <input type="number"
+                                            [ngClass]="{'is-invalid':(vehicleCrowdForm.get('min').invalid)}"
+                                            formControlName="min" name="" pattern="\d+" id="min" class="form-control"
+                                            placeholder="min">
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <!-- <label for="min" class="form-label">Min</label> -->
+                                        <input type="number"
+                                            [ngClass]="{'is-invalid':(vehicleCrowdForm.get('max').invalid)}"
+                                            formControlName="max" pattern="\d+" name="" id="min" class="form-control"
+                                            placeholder="max">
+                                    </div>
+                                    <!-- <div class="form-check form-check-inline" id="custome">
+                                    <input type="checkbox" name="" id="max" class="form-check-input">
+                                    <label for="max" class="form-check-label">Vest</label>
+                                </div> -->
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="alert alert-dark">Above configaration will be applied to this camera</div>
+        </div>
+        <div class="col-2">
+            <div class="mx-auto my-auto">
+                <!-- <button class="btn primary mt-2 mb-2" (click)="SaveChanges()" *ngIf="!isChanges">
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+
+                &nbsp; Save Config &nbsp;</button> -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<ng-template let-modal #ROINameChangeModal>
+    <div class="card">
+        <div class="card-header">
+            <h4> Change ROI name</h4>
+        </div>
+        <div class="card-body p-4">
+            <input type="text" id="ROI" class="form-control mb-3" [formControl]="tempROIID"
+                [ngClass]="{'is-invalid':(tempROIID.invalid && tempROIID.touched)}">
+            <div id="validationServerUsernameFeedback"
+                [ngClass]="(tempROIID.invalid && tempROIID.touched)?'invalid-feedback':'visually-hidden'">
+                Please enter roi name.
+            </div>
+            <button class="btn success ms-2 float-end" (click)="ChangeROIName()">Change</button>
+            <button class="btn danger me-2 float-end" (click)="ChangeROIName()">cancel</button>
+
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template let-modal #ROINameModal>
+    <div class="card">
+        <div class="card-header">
+            <h4> ROI Name</h4>
+        </div>
+        <div class="card-body p-4">
+            <input type="text" id="ROI" class="form-control mb-3" placeholder="Enter ROI name"
+                [ngClass]="{'is-invalid':(roiNameControl.invalid && roiNameControl.touched && roiNameControl.dirty)}"
+                [formControl]="roiNameControl">
+            <div id="validationServerUsernameFeedback"
+                [ngClass]="(roiNameControl.invalid && roiNameControl.touched)?'invalid-feedback':'visually-hidden'">
+                Please enter roi name.
+            </div>
+            <div class="mb-3 mt-3 d-flex justify-content-center">
+                <div class="form-check form-check-inline" id="custome">
+                    <input type="checkbox" [formControl]="classIDPerson" [defaultValue]="'person'" [value]="'person'"
+                        checked class="form-check-input" (change)="ClassId($event)" name="" id="0">
+                    <label for="0" class="form-check-label">Person</label>
+                </div>
+                <!-- <div class="form-check form-check-inline" id="custome">
+                    <input type="checkbox" [formControl]="classIDCar" [value]="'car'" [defaultValue]="'car'"
+                        class="form-check-input" (change)="ClassId($event)" name="" id="1">
+                    <label for="1" class="form-check-label">Car</label>
+                </div>
+                <div class="form-check form-check-inline" id="custome">
+                    <input type="checkbox" [formControl]="classIDBike" [value]="'bike'" [defaultValue]="'bike'"
+                        class="form-check-input" (change)="ClassId($event)" name="" id="2">
+                    <label for="2" class="form-check-label">Bike</label>
+                </div> -->
+                <div class="form-check form-check-inline" id="custome">
+                    <input type="checkbox" [formControl]="classIDTruck" [value]="'truck'" [defaultValue]="'truck'"
+                        class="form-check-input" (change)="ClassId($event)" name="" id="3">
+                    <label for="3" class="form-check-label">Truck</label>
+                </div>
+            </div>
+            <button class="btn success ms-1 float-end" (click)="nameSubmit()"
+                [disabled]="(roiNameControl.invalid||(classIds.length==0))">Submit</button>
+            <button class="btn danger me-1 float-end" (click)="modal.close('Cross click')">cancel</button>
+
+        </div>
+
+    </div>
+</ng-template>
+
+<ng-template let-modal #deleteModal>
+    <div class="modal-body">
+        <div class="modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header flex-column">
+                    <div class="icon-box">
+                        <i class="material-icons">&#xE5CD;</i>
+                    </div>
+                    <h4 class="modal-title w-100">Are you sure?</h4>
+                    <!-- <button type="button" class="btn"  aria-hidden="true">&times;</button> -->
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete these ROI? This process cannot be undone.</p>
+                </div>
+                <div class="modal-footer justify-content-center">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('Cross click')"
+                        data-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn danger" (click)="DeleteROI()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<ng-template let-modal #roiInfo> 
+    <div class="alert alert-info">
+    <div class="">
+        <div class="d-flex justify-content-center">
+        <div class="">
+           
+             <h5>  Now you will draw  directions</h5> 
+            </div>
+        </div>
+    </div>
+</div>
+</ng-template>

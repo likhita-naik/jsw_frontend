@@ -1,0 +1,118 @@
+.image{
+    margin-left: 0px;
+    margin-right: 0px;
+    height: 174px;
+    width: 330px;
+    border-radius: 5px !important;
+    object-fit:fill;
+}
+
+
+ngb-pagination ::ng-deep ul > li:not(.active) > a {
+  background-color:  #f8f8f8 !important;
+  border-radius: 5px !important;
+  /* border: 1px solid var(--label-color) !important; */
+  color: var(--label-color) !important;
+  box-shadow: none;
+}
+
+ngb-pagination ::ng-deep ul > li.active > a {
+  background-color: var(--label-color) !important;
+  border-radius: 5px !important;
+  border: 1px solid var(--label-color) !important;
+
+  box-shadow: none;
+
+}
+  
+  .task-input{
+    /* height: 50px; */
+    padding:0 25px;
+    position: relative;
+}
+.task-input input{
+  padding: 5px 35px 5px 5px;
+  height:40px ;
+}
+/* 
+.task-input input{
+    height: 100%;
+    width: 100%;
+    padding: 0px 25px 0px 53px;
+    border: 1px solid #3b7197;
+    border-radius: 5px;
+
+} */
+
+.img{
+height: 20px;
+width: 20px;
+}
+
+.task-input img{
+    top: 50%;
+    position: absolute;
+    transform: translate(170px,-50%);
+}
+
+input[type='checkbox'] {
+  
+  display: block;
+  height: 30px;
+  margin: 0 0 -53px -9999px;
+  order: 4;
+  top: 5px;
+  outline: none;
+  counter-increment: undone-items;
+}
+
+input:checked {
+  pointer-events: none;
+  order: 2;
+  counter-increment: done-items;  
+}
+
+label {
+  pointer-events: none;
+  display: block;
+  position: relative;
+  padding: 15px 10px 15px 0px;
+  border-top: 1px dashed #fff;
+  order: 4;
+  cursor: pointer;
+  animation: undone .5s;
+}
+
+label::before {
+  content: '\f10c'; /* circle outline */
+  display: block;
+  position: absolute;
+  top: 15px;
+  margin-right: 0;
+  /* right: 5px; */
+  /* font: 1.1em 'FontAwesome'; */
+}
+
+input:checked + label {
+  order: 2;
+  animation: done .5s;
+}
+
+input:checked + label::before {
+  margin-left: 15px;
+  color :#cc1d1d;
+  /* color: rgba(83, 128, 16, 0.788); */
+  content: '\2713'; /* circle checkmark */
+}
+
+input+ label::before {
+  margin-left: 15px;
+  color :#cc1d1d;
+   /* color:rgb(175, 45, 45); */
+  content: '\2716'; /* circle checkmark */
+}
+
+table td {
+ text-align: center !important;
+ align-content: center;
+}

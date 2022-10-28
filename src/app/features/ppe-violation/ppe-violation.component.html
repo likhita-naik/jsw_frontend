@@ -1,0 +1,156 @@
+<div class="dashboard-content">
+    <div class="page-header">
+        <h3>PPE Violation Data</h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-4">
+        <div class="card analytics">
+            <div class="card-body">
+                <h4>heading</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card analytics">
+            <div class="card-body">
+                <h4>heading</h4>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="card analytics">
+            <div class="card-body">
+                <h4>heading</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-3">
+    <div class="col-3">
+      
+                <input type="text" ngxDaterangepickerMd [timePicker]="true" [(ngModel)]="selected" class="form-control"/>
+              <!-- <div class="input-group-append">
+                <button class="calendar"></button>
+              </div>    -->
+            
+    </div>
+    <!-- <div class="col-2">
+      <div class="card analytics">
+        <div class="card-body">
+            <h4></h4>
+        </div>
+      </div>
+    </div> -->
+    <div class="col-3">
+        <div class="s">
+            <div class="card-body">
+                <ng-multiselect-dropdown [placeholder]="'select the Violation'" [settings]="dropdownSettings"
+                    [data]="violationTypes|async" [(ngModel)]="selectedViolation"
+                    (onSelect)="onViolationTypeSelect($event)">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="">
+            <div class="card-body">
+                <ng-multiselect-dropdown [placeholder]="'select the Area'" [settings]="dropdownSettings"
+                    [data]="plantData|async" [(ngModel)]="selectedPlant" (onSelect)="onPlantSelect($event)">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </div>
+    <div class="col-3">
+        <div class="">
+            <div class="card-body">
+                <ng-multiselect-dropdown [placeholder]="'select the Plant'" [settings]="dropdownSettings"
+                    [data]="areaData|async" [(ngModel)]="selectedArea" (onSelect)="onAreaSelect($event)">
+                </ng-multiselect-dropdown>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5>Violation Details</h5>
+
+            </div>
+            <div class="card-body">
+                <table class="table ">
+                    <thead>
+                        <tr>
+                            <th scope="col">SI.no</th>
+                            <th scope="col">Camera name</th>
+                            <th scope="col">Panel Name</th>
+                            <th scope="col">Plant Name</th>
+                            <th scope="col">Area Name</th>
+                            <th scope="col">Image</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- alert popup -->
+<div style="display: none;">
+    <div class="col-12">
+        <div #dangerAlert>
+
+            <div class="mb-0"
+                style="border: 2px solid rgba(121, 20, 20, 0.699);background-color:rgba(214, 148, 148, 0.459);">
+                <div class="modal-header" style="text-align: center;">
+                    <h3 class="">Violation</h3>
+                    <!-- <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button> -->
+                </div>
+
+                <div class="modal-body">
+                    <div class="row">
+
+                        <div class="col-12">
+                            <img src="http://192.168.1.54:5000/get_roi_image/KLE_HUBLI_vidya_nagar_2022_08_19_16_42_53_156847.jpg" alt="" class="violImage"
+                                width="100%"
+                                style="width:30%;height: 30%;object-fit: fill;border-radius:3px 3px 3px 3px ;">
+                        </div>
+                        <!-- <div class="col-xl-12 col-md-12 col-lg-12 col-xs-12">
+                            <h4><b>Camera ID : </b>
+                                <span class="text-dark">{{currentViol.cameraid ?currentViol.cameraid:0}}</span>
+                            </h4>
+                            <h4><b>Camera Name : </b>
+                                <span class="text-dark">{{currentViol.camera_name ?currentViol.camera_name:'null'}}</span>
+                            </h4>
+                            <h4><b> Device Name : </b>
+                                <span class="text-dark">{{currentViol.deviceid?currentViol.deviceid:'--'}}</span>
+                            </h4>
+
+                            <h4><b> Detected Time : </b>
+                                <span
+                                    class="text-dark">{{currentViol.timestamp?currentViol.timestamp:'--'}}</span>
+                            </h4>
+                            
+
+
+                        </div> -->
+
+
+                    </div>
+                </div>
+            </div>
+
+        </div>

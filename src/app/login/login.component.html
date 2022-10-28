@@ -1,0 +1,48 @@
+
+<div class="wrapper fadeInDown">
+    <div id="formContent">
+        <!---Logo-->
+        <div class="fadeIn first">
+            <img src="../../assets/images/logo2.png" id="icon">
+        </div>
+        <div class="mb-3 mt-4" class="text-muted" style="font-family: 'Times New Roman', Times, serif;"><h5><b>Admin</b></h5></div>
+
+        <!-------->
+        <form  >
+         <input 
+          type="text" 
+          id="login" 
+          class="fadeIn second mb-2" 
+          name="userName" 
+          placeholder="User name"  
+          [formControl]="email"
+          required>
+          <p *ngIf="email.invalid&&email.touched" class="help-block mb-2"><small style="color: red;">*User name is
+          required</small></p>
+
+         <input 
+          type="password" 
+          id="password" 
+          class="fadeIn third mb-2"  
+           name="password" 
+           [formControl]="password"
+          placeholder="Password" 
+          required>
+
+         <p *ngIf="password.invalid&&password.touched" class="help-block mb-2"><small style="color: red;">*password is
+        required</small></p>
+
+      <!-- <small><a (click)="ForgotFunction()" style="cursor: pointer;" class="underlineHover" *ngIf="emailName.valid"><u>forgot password?</u></a></small><br> -->
+
+      <p *ngIf="fail" style="color:red"><small>User name or password is incorrect</small></p>
+      <button type="submit" (click)="OnSubmit()" [disabled]="!email.valid && !password.valid" class="fadeIn fourth mt-2"  value="Log In"> LOG IN</button>
+
+      
+      
+    </form> 
+    
+    </div>  
+
+  </div>
+          
+          

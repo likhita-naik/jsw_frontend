@@ -1,0 +1,348 @@
+<div class="container-fluid">
+    <div class="page-header">
+        <h3>Dashboard</h3>
+    </div>
+
+
+    <div class="row mb-5" id=cameraStatus>
+        <div class="border-bottom  mb-3">
+            <h5 class="float-start"> Cameras</h5>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body ">
+                <div class="statusGrid">
+                    <div>
+                        <div class="font-primary"><small> Total Cameras</small></div>
+                        <div class="">
+                            <h1>{{cameraStatus.total_cam_count}}</h1>
+                        </div>
+                    </div>
+                    <div class="">
+                        <img class="iconImage" src="assets/images/icons/Camera.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div (click)="openECDetailsModal(enabledCameraDetails)">
+                        <div class="font-primary"><small>Solution Enabled Cameras</small> </div>
+                        <div class="">
+                            <h1>{{cameraStatus.enable_data_count}}</h1>
+                        </div>
+                    </div>
+                    <div class="">
+                        <img class="iconImage" src="assets/images/icons/EnabledCamera.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div >
+                        <div class="font-primary"><small> Disabled Cameras</small></div>
+                        <div class="" (click)="openDCDetailsModal(disabledCameraDetails)">
+                            <h1>{{cameraStatus.disable_data_count}}</h1>
+                        </div>
+                    </div>
+                    <div class="">
+                        <img class="iconImage" src="assets/images/icons/DisabledCamera.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div>
+                        <div class="font-primary"><small>Not Working Cameras</small></div>
+                        <div class="" (click)="openNWCDetailsModal(NWCameraDetails)">
+                            <h1>{{cameraStatus.not_working_cam_count}}</h1>
+                        </div>
+                    </div>
+                    <div class="">
+                        <img class="iconImage" src="assets/images/icons/notworkingCamera.svg" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-12 border-bottom  mb-3">
+            <h5 class="float-start">Violations</h5>
+            <div class="offset-9 col-3">
+
+                <div id="reportrange" (click)="openDatePicker()"
+                    style="background: #fff; cursor: pointer; padding: 5px 10px;border-radius: 4px;; border: 1px solid #ccc; width: 100%">
+                    <fa-icon class="float-start" icon="calendar"></fa-icon>
+                    <span id="dateSpan" class="">
+                        <input type="text" style="right: 5px;" id="spanDateInput" ngxDaterangepickerMd #datepicker class=""
+                        [showCustomRangeLabel]="true" [ranges]="ranges" [timePicker]="true" placeholder="Select Date" [(ngModel)]="selectedMoments"
+                            required /></span>
+                </div>
+            </div>
+            <!-- 
+<fa-icon icon="caret-down"c>
+
+</fa-icon>                </div> -->
+
+            <!-- <input type="text" id="dateInput" ngxDaterangepickerMd #datepicker [timePicker]="true"
+                    placeholder="Select Date" [(ngModel)]="selectedMoments" required class="form-control" /> -->
+        </div>
+
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div class="">
+                        <div class="font-primary">Total Violations</div>
+                        <div class="">
+                            <h1> {{violationsCount.total_count}}</h1>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <img src="assets/images/icons/violation.svg" alt="" class="iconImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div class="">
+                        <div class="font-primary">RA violations</div>
+                        <div class="">
+                            <h1> {{violationsCount.ra_count}}</h1>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <img src="assets/images/icons/RA.svg" alt="" class="iconImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div class="">
+                        <div class="font-primary">PPE Violations</div>
+                        <div class="">
+                            <h1>{{violationsCount.ppe_count}}</h1>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <img src="assets/images/icons/ppe.svg" alt="" class="iconImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 col-xl-3 col-xs-12 col-sm-12 col-md-4 mb-3">
+            <div class="card card-body">
+                <div class="statusGrid">
+                    <div class="">
+                        <div class="font-primary">PPE Violations</div>
+                        <div class="">
+                            <h1> 500</h1>
+                        </div>
+                    </div>
+
+                    <div class="">
+                        <img src="assets/images/icons/ppe.svg" alt="" class="iconImage">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template let-modal #enabledCameraDetails>
+    <div class="modal-header">
+        <h4 class="modal-title" style="color: #178489;">Solution Added Camera Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body" id="modal1">
+        <div class="col-12 card card-body">
+            <table class="table table-bordered" id="dataTable">
+                <thead style="color:#134276">
+                    <tr>
+                        <th scope="col">AI Solutions</th>
+                        <th scope="col">No of  Cameras</th>
+                        <th scope="col">Camera Details</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>RA</b></td>
+                        <td><b>{{ECDetails.roi_cam_count}}</b></td>
+                        <td>
+                            <table class="table table-responsive">
+                                <thead>
+                                    <tr>
+                                        <th>Camera Name</th>
+                                        <th>Camera IP</th>
+                                        <th>Camera Image</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let camera of raCamDetails">
+                                        <td>{{camera.camera_name}}</td>
+                                        <td>{{camera.camera_ip}}</td>
+                                        <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td><b>PPE</b></td>
+                        <td><b>{{ECDetails.ppe_data_count}}</b></td>
+                        <td>
+                <tbody>
+                    <tr *ngFor="let camera of ppeCamDetails">
+                        <td>{{camera.camera_name}}</td>
+                        <td>{{camera.camera_ip}}</td>
+                        <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                    </tr>
+                </tbody>
+                </td>
+                </tr>
+                <tr>
+                    <td><b>Traffic Count</b></td>
+                    <td><b>{{ECDetails.tc_data_count}}</b></td>
+                    <td>
+                        <tbody>
+                            <tr *ngFor="let camera of tcCamDetails">
+                                <td>{{camera.camera_name}}</td>
+                                <td>{{camera.camera_ip}}</td>
+                                <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                            </tr>
+                        </tbody>
+                    </td>
+                </tr>
+                <tr>
+                    <td><b>Crowding</b></td>
+                    <td><b>{{ECDetails.cr_data_count}}</b></td>
+                    <td>
+                        <tbody>
+                            <tr *ngFor="let camera of crCamDetails">
+                                <td>{{camera.camera_name}}</td>
+                                <td>{{camera.camera_ip}}</td>
+                                <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                            </tr>
+                        </tbody>
+                    </td>
+                </tr>
+                </tbody>
+
+            </table>
+            <ng-template #errorContent>
+                <div class="col-12 card alert alert-danger">
+                    <div class="d-flex justify-content-center">
+                        <div class="">Error while fetching the data</div>
+                    </div>
+
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+</ng-template>
+
+<ng-template let-modal #disabledCameraDetails>
+    <div class="modal-header">
+        <h4 class="modal-title" style="color: #178489;">Disabled Camera Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-12 card">
+            <table class="table table-bordered" id="dataTable">
+                <thead style="color:#134276">
+                    <tr>
+                        <th>Camera Name</th>
+                        <th>Camera IP</th>
+                        <th>Camera Image</th>
+                    </tr>
+                </thead>
+  <tbody>
+                <tr *ngFor="let camera of disabledCamDetails">
+                    <td>{{camera.camera_name}}</td>
+                    <td>{{camera.camera_ip}}</td>
+                    <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                </tr>
+                </tbody>
+           
+
+            </table>
+            <ng-template #errorContent>
+                <div class="col-12 card alert alert-danger">
+                    <div class="d-flex justify-content-center">
+                        <div class="">Error while fetching the data</div>
+                    </div>
+
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+</ng-template>
+
+
+<ng-template let-modal #NWCameraDetails>
+    <div class="modal-header">
+        <h4 class="modal-title" style="color: #178489;">Now Working Camera Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+    </div>
+    <div class="modal-body">
+        <div class="col-12 card">
+            <table class="table table-bordered" id="dataTable">
+                <thead style="color:#134276">
+                    <tr>
+                        <th>Camera Name</th>
+                        <th>Camera IP</th>
+                        <th>Camera Image</th>
+                    </tr>
+                </thead>
+  <tbody>
+                <tr *ngFor="let camera of NWCamDetails">
+                    <td>{{camera.camera_name}}</td>
+                    <td>{{camera.camera_ip}}</td>
+                    <td><img [src]="IP+'/image/'+camera.imagename" alt=""> </td>
+
+                </tr>
+                </tbody>
+           
+
+            </table>
+            <ng-template #errorContent>
+                <div class="col-12 card alert alert-danger">
+                    <div class="d-flex justify-content-center">
+                        <div class="">Error while fetching the data</div>
+                    </div>
+
+                </div>
+            </ng-template>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-light" (click)="modal.close('Close click')">Close</button>
+    </div>
+
+</ng-template>

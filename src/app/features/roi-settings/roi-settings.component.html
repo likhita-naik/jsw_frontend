@@ -1,0 +1,162 @@
+<div class="container-fluid dashboard-content">
+    <div class="page-header mb-3">
+        <h2>Camera Settings</h2>
+    </div>
+
+    <div class="row" *ngIf="isPanelData" id="analytic">
+        <div class="col-3">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Camera Name</h5>
+                    <h3>{{PanelData[0].camera_name}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">IP Address</h5>
+                    <h3>{{PanelData[0].ip_address?PanelData[0].ip_address:'None'}}</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Location</h5>
+                    <h3>Kaling Nagar</h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3">
+            <div class="card analytics">
+                <div class="card-body">
+                    <h5 class="text-muted">Details</h5>
+                    <h3>--</h3>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+    
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <div class="">
+                <div class="row">
+                    <div class="col-12">
+                        <button class="me-2 btn success" (click)="AddNewPanel()">Add</button>
+                        <button class="me-2 btn danger" (click)="DeleteNewPanel()">Delete</button>
+                        <!-- <button class="btn danger" *ngIf="isEdit||isChanges" (click)="SaveEditedChanges()">Save changes</button> -->
+                        <div class="float-end">
+                            <button class="float-end btn primary" (click)="Back()">Back</button>
+                          </div>
+                          <div class="float-end">
+                            <button class="btn default me-2" *ngIf="isEdit||isChanges" (click)="SaveEditedChanges()">Save changes</button>
+                        </div>
+                    </div>
+                  
+                    <!-- <div class="col-1">
+                        <button class="btn default">Edit</button>
+                    </div> -->
+                    <div class="col-1">
+                    </div>
+                    <!-- <div class="col-3 alert alert-secondary">Right click to confirm the roi</div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card card-body">
+            <div id="canvas-container" class="d-flex justify-content-center" #canvasContainer>
+                <canvas id="canvasROI" class="canvas-class" height="auto" width="auto"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col-12">
+            <div class="card" *ngIf="isPanelData">
+                <div class="card-header">
+                    <h4>Panels</h4>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                       <th scope="col">S.No</th>
+                       <th scope="col">Panel Number</th>
+                       <th scope="col">Settings</th>
+
+                               </tr>
+                    </thead>
+                    <tbody>
+                <tr *ngFor="let panels of allPanelData;let i=index">
+                    <td>{{i+1}}</td>
+                    <td (dblclick)="AlterPanelName(i)">
+                        {{panels.panel_id}}
+                    </td>
+                    <td>
+                        <button class="btn btn-sm mr-2" (click)="Edit(i)">Edit Panel</button>
+                        <button class="btn btn-sm mr-2" *ngIf="panels.rw.length>0" (click)="EditRW(i)">Edit RW</button>                                                                          
+                           <button class="btn" (click)=AddNewRW(i)  >Add RW</button>
+                        <button class="btn btn-sm mr-2" (click)="DeletePanel(i)">Delete</button>
+                        <button class="btn btn-sm mr-2" *ngIf="panels.rw.length>0" (click)="DeletePanelRW(i)">Delete RW</button>                                                                          
+
+                    </td>
+                </tr>
+                    </tbody>
+                </table>
+                <!-- <div class="" *ngFor="let data of PanelData.data"> -->
+                
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="offset-9">
+            <div class="col-3">
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<ng-template let-modal #panelNameChangeModal>
+    <div class="card">
+        <div class="card-header">
+            <h4> Change Panel No</h4>
+        </div>
+        <div class="card-body p-4">
+            <input type="text" id="panel" class="form-control mb-3" [(ngModel)]="tempPanelID">
+            <button class="btn btn-secondary ml-2 float-end" (click)="ChangePanelName()">Submit</button>
+            <button class="btn btn mr-2 float-end" (click)="modal.close('Cross click')">cancel</button>
+
+        </div>
+
+    </div>
+</ng-template>
+<ng-template let-modal #panelNameModal>
+    <div class="card">
+        <div class="card-header">
+            <h4>Enter Panel Name</h4>
+        </div>
+        <div class="card-body p-4">
+            <input type="text" id="panel"
+                [ngClass]="{'is-invalid': (panelNameControl.invalid && panelNameControl.touched && panelNameControl.dirty)}"
+                class="form-control mb-3" [formControl]="panelNameControl">
+                <div id="validationServerUsernameFeedback"
+                [ngClass]="(panelNameControl.invalid && panelNameControl.touched)?'invalid-feedback':'visually-hidden'">
+                Please enter roi name.
+            </div>
+            <button class="btn success ms-2 float-end" [disabled]="panelNameControl.invalid" (click)="nameSubmit()">Submit</button>
+            <button class="btn danger me-2 float-end" (click)="modal.close('Cross click')">cancel</button>
+
+        </div>
+
+    </div>
+</ng-template>

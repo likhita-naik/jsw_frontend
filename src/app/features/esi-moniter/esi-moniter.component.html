@@ -1,0 +1,246 @@
+<div class="container-fluid">
+    <div class="page-header mb-3">
+        <h3>Job sheet </h3>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+        <div class="float-end">
+            <!-- <button class="btn default mr-2 float-end">Download All job sheet data</button> -->
+            <button class="btn default me-2 float-end" (click)="ResetJobSheet()">Reset Job sheet</button>
+        </div>
+        <div class="float-end">
+            <!-- <button class="btn default mr-2 float-end">Download All job sheet data</button> -->
+            <button class="btn primary me-2 float-end" (click)="StartApplication()">Start Application</button>
+        </div>
+    </div>
+    </div>
+    <div class="row row-offset-2">
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-header">
+                    <h4 class="text-muted">Total Jobs</h4>
+                    <h2>{{totalJobsheetEntries}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-header">
+                    <h4 class="text-muted">Enabled Cameras</h4>
+                    <h2>{{enabledCameras.length?enabledCameras.length:0}}</h2>
+                </div>
+            </div>
+        </div>
+
+        <!-- <div class="col-2">
+            <div class="card analytics">
+                <div class="card-header">
+                    <p class="text-muted">Completed</p>
+                    <h2>35</h2>
+                </div>
+            </div>
+        </div> -->
+
+        <!-- <div class="col-2">
+            <div class="card analytics">
+                <div class="card-header">
+                    <p class="text-muted">Awaiting</p>
+                    <h2>35</h2>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="col-4">
+            <div class="card analytics">
+                <div class="card-header">
+                    <h4 class="text-muted">Not Working</h4>
+                    <h2>{{notInJobList.length?notInJobList.length:0}}</h2>
+                </div>
+            </div>
+        </div>
+
+    </div>
+     
+    <div class="row">
+        <!-- <div class="col-2">
+            <ng-multiselect-dropdown 
+             [placeholder]="'select the jobsheet'" 
+             [settings]="dropdownSettings"
+             [data]="dataJobsheets|async"
+             [(ngModel)]="selectedJobsheet" 
+             >
+            </ng-multiselect-dropdown>
+        </div> -->
+        <div class="col-3">
+            <ng-multiselect-dropdown [placeholder]="'select the Plant'" [settings]="dropdownSettings"
+                [data]="plants|async" [(ngModel)]="selectedPlant" (onSelect)="OnPlantSelect($event)"
+                (onDeSelect)="onDeselectPlant($event)" (onSelectAll)="OnAllPlantSelect($event)" >
+            </ng-multiselect-dropdown>
+        </div>
+        <div class="col-3">
+            <ng-multiselect-dropdown [placeholder]="'select the Area'" [settings]="dropdownSettings"
+                [data]="areas|async" [(ngModel)]="selectedArea" [disabled]="isAreaDisable" (onDeSelect)="OnDeselectArea($event)"
+                (onSelect)="OnAreaSelect($event)">
+            </ng-multiselect-dropdown>
+        </div>
+        <div class="col-3">
+            <ng-multiselect-dropdown [placeholder]="'select the '" [settings]="dropdownSettings"
+                [data]="panelNumbers|async" [(ngModel)]="selectedPanel" [disabled]="isPanelDisable"
+              (onDeSelect)="OnDeselectPanel($event)"   (onSelect)="OnPanelSelect($event)">
+            </ng-multiselect-dropdown>
+        </div>
+        <!-- <div class="col-2">
+            <ng-multiselect-dropdown [placeholder]="'select the camera'" [settings]="dropdownSettings"
+                [data]="cameras|async" [(ngModel)]="selectedCamera" (onSelect)="onCameraSelect($event)">
+            </ng-multiselect-dropdown>
+        </div> -->
+
+
+
+        <div class="col-3">
+            <button class="float-end btn default ms-2" (click)="JobsheetDownload()">
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" *ngIf="excelLoad"></span>
+                      
+                <fa-icon icon="download" *ngIf="!excelLoad" class="me-2"></fa-icon>
+                Job sheet
+            </button>
+            <button class="float-end btn default me-4" (click)="ShowData()">
+                Show Data
+            </button>
+        
+          
+        </div>
+    </div>
+
+    <div class="mt-4 col-12">
+        <div class="card" id="dataTable" #dataTable >
+            <div class="card-header">
+                <h4 class="float-start">Job Card Details</h4>
+                <div class="col-2 float-end">
+                    <ng-multiselect-dropdown [placeholder]="'Hide Column'" [settings]="dropdownSettings"
+                        [data]="dataHeaders" [(ngModel)]="selectedColumn" (onSelect)="onHideColumn($event)"
+                        (onDeSelect)="onShowColumn($event)">
+                    </ng-multiselect-dropdown>
+                </div>
+            </div>
+            <div class="table-responsive">
+                <table class="table" >
+                    <thead>
+                        <tr>
+                            <!-- <th scope="col" *ngFor="let header of headers"   (click)="header.showColumn=!header.showColumn">{{header.columnName}}</th> -->
+                            <th scope="col" *ngIf="showSI" sortable (click)="isDesc=!isDesc">SI.no <span
+                                    [ngClass]="['pointer',isDesc?'desc':'asc']"></span> </th>
+                            <th scope="col" sortable="plant" (sort)="onSort($event)" *ngIf="showPlant"
+                                (click)="isDesc=!isDesc">Plant</th>
+                            <th scope="col" sortable *ngIf="showArea" (click)="isDesc=!isDesc">Area</th>
+                            <th scope="col" sortable width="2em" *ngIf="showJD" (click)="isDesc=!isDesc">Job Description</th>
+                            <th scope="col" sortable *ngIf="showNIP" (click)="isDesc=!isDesc">No of isolating Points
+                            </th>
+                            <th scope="col" sortable *ngIf="showIA" (click)="isDesc=!isDesc">Isolating Area</th>
+                            <th scope="col" sortable *ngIf="showIP" (click)="isDesc=!isDesc">IP Address</th>
+                            <th scope="col" sortable *ngIf="showPanel" (click)="isDesc=!isDesc">Panel</th>
+
+                            <th scope="col" sortable *ngIf="showPS" (click)="isDesc=!isDesc">Panel Status</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let data of jobsheetData|async;let i=index" [ngClass]="{'highlight':data.data.panel_data.panel_id=='NA'}" >
+                            <td *ngIf="showSI">{{data.sl_no}}</td>
+                            <td *ngIf="showPlant">{{data.plant}}</td>
+                            <td *ngIf="showArea">{{data.area}}</td>
+                            <td *ngIf="showJD">{{data.job_description}}</td>
+                            
+
+                            <td *ngIf="showNIP">{{data.no_of_isolating_points}}</td>
+                            <td *ngIf="showIA">{{data.isolating_locations}}</td>
+                            <td *ngIf="showIP">
+                                    {{data.data.ip_address?data.data.ip_address:"--"}}&nbsp;&nbsp;
+
+                            </td>
+                            <td *ngIf="showPanel">
+                                <div class="div">{{data.data.panel_data.panel_id}}<br /></div>
+                            </td>
+                            <td *ngIf="showPS">
+                                <div class="">
+                                    <table class="table" >
+                                        <thead [ngClass]="{'highlight':data.data.panel_data.panel_id=='NA'}">
+                                            <th></th>
+                                            <th ></th>
+                                            <th *ngIf="data.rack_process==='rack_in'"></th>
+                                            <th *ngIf="data.rack_process==='rack_out'"> </th>
+                                            <th *ngIf="data.rack_method!=null">Rack Method</th>
+                                            <td></td>
+
+                                        </thead>
+                                        <tbody>
+                                            <tr scope="row" [ngClass]="{'highlight':data.data.panel_data.panel_id=='NA'}">
+                                                <td scope="col">
+                                                    <div [ngClass]="data.data.panel_data.panel_status===null?'text-warning':'text-success'">
+                                                        {{data.data.panel_data.panel_status===null?'Pending':"Completed"}}&nbsp;&nbsp;
+                    
+                                                    </div>&nbsp;&nbsp;
+                                                </td>
+                                                <td scope="col" >
+                                                        <a [routerLink]="['/app/panelROISettings']"
+                                                            [queryParams]="{ id:data['_id'].$oid,type:data['plant'],image_name:data.data.image_name}"
+                                                            target="_blank">
+                                                          
+                                                           <button *ngIf="data.data.panel_data.panel_id" class="btn default">
+                                                            <span class="text-white"> Edit</span>
+                                                        </button>
+
+                                                        </a>
+                                                </td>
+
+                                                <td scope="col"  id="success"*ngIf="data.rack_process==='rack_in'"  style="pointer-events:none"  >
+                                                    <!-- <button *ngIf="panel" class="btn default btn default-tertiary">
+                                                    <a [routerLink]="['/app/jobsheetViolation']"
+                                                        [queryParams]="{ id:data['_id'].$oid,type:data['plant'],image_name:data.image_name}"
+                                                        target="_blank">
+                                                        Rack in</a>
+                                                </button> -->
+                                                    <input type="checkbox"  [checked]="data.rack_process==='rack_in'"  class="form-check-input" name="RackIn"
+                                                        [id]="'rackIn'+i">&nbsp;<label class="form-check-label"  [for]="'rackIn'+i">Rack In</label>
+                                                </td>
+                                                <td *ngIf="data.rack_process==='rack_out'"  style="pointer-events:none"  id="success">
+                                                     <input type="checkbox"  [checked]="data.rack_process==='rack_out'"class="form-check-input" name="RackIn"
+                                                    [id]="'rackOut'+i">&nbsp; <label class="form-check-label"  [for]="'rackOut'+i">Rack Out</label>
+                                                </td>
+                                                <td *ngIf="data.rack_method!=null">
+                                                    {{data.rack_method}}
+
+                                                </td>
+                                                <td> <input type="checkbox" [checked]="data.violation" style="pointer-events: none;" class="ppe form-check-input is-invalid"
+                                                        name="RackIn" id="ppe"><label class="form-check-label"
+                                                        style="cursor:pointer;"
+                                                        (click)="ToPPE(data.data.panel_data.panel_id)">&nbsp;
+                                                        PPE</label></td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                            <!-- <td>ROI<br/>
+                <button class="btn default">
+                    <a [routerLink]="['/app/jobsheetViolation']" 
+                    [queryParams]="{ id:data['_id'].$oid,type:data['plant'],image_name:ip.image_name}" target="_blank">
+                    Edit</a>
+                </button></td> -->
+
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="d-flex mx-auto justify-content-center p-1">
+                    <ngb-pagination [collectionSize]="total|async" [(page)]="page" [pageSize]="pageSize"
+                        style="width: 95vw;overflow-x: auto;" (pageChange)="sliceData()">
+                    </ngb-pagination>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="container-fluid">
+    <div class="page-header mb-5">
+        <h3>Job Sheet Upload</h3>
+    </div>
+
+
+    <!-- <div>
+        <div class="card">
+            <div class="card-header">
+              
+                  <button class="btn mr-2 float-start" placement="bottom" (click)=" downloadSampleFormat()">
+                    Sample Format Download
+                    &nbsp;
+                    <fa-icon icon="download" class="text-white mr-1"></fa-icon>
+                </button>
+
+                <button class="btn mr-2 float-start" placement="bottom" (click)="openModal(upload)">
+
+                    Click Here to Upload Job Card Details
+                    &nbsp;
+                    <fa-icon icon="plus" class="text-white mr-1"></fa-icon>
+                </button>
+
+                <button class="btn mr-2 float-left" placement="bottom">
+                    Submit Job Card File
+                    &nbsp;
+                </button>
+
+
+            </div>
+        </div>
+    </div> -->
+    <div class="col-12 upload-container">
+        <div id="header" class="mb-1">
+        <span class="float-start">    
+        <h2>File Upload</h2>
+        </span> 
+        <span class="float-end">
+            <button class="btn default mb-2" (click)=SampleExcelDownload()>
+                <span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true" *ngIf="isLoading"></span>
+
+                <fa-icon icon="download" *ngIf="!isLoading" class="me-2"></fa-icon>Download Sample sheet</button>
+        </span>
+        </div>
+      
+<!-- Upload  -->
+<form id="file-upload-form" class="col-12 uploader">
+  <input id="file-upload" type="file" name="fileUpload" accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+
+  <label for="file-upload" id="file-drag">
+    <img id="file-image" src="#" alt="Preview" class="hidden">
+    <div id="start">
+     <fa-icon icon="file-arrow-up"></fa-icon>
+      <div>Select a file or drag here</div>
+      <span id="file-upload-btn" class="btn btn-primary">Select a file</span>
+    </div>
+    <div id="response" class="hidden">
+      <div id="messages"></div>
+      <progress class="progress" id="file-progress" value="0">
+        <span>0</span>%
+      </progress>
+    </div>
+  </label>
+</form>
+</div>
+
+   
+    <!--  ============================================================== -->
+    <!-- END OF DATA TABLE -->
+</div>
+
+
+<ng-template #upload let-modal>
+    <div id="formContent">
+        <div style="font-family: 'Times New Roman', Times, serif;">
+            <h3><b>Upload Job Card Details </b></h3>
+        </div>
+
+        <button type="button" class="close" aria-label="Close" (click)="modal.close('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+
+    </div>
+    <form (ngSubmit)="submitExcel()" ngNativeValidate>
+
+        <div class="file-upload">
+            <div class="file-select">
+                <div class="file-select-button" id="fileName">Choose File</div>
+                <div class="file-select-name" id="noFile" *ngIf="!excelFile" else content>
+                    Choose Excel Sheet
+                </div>
+                <div class="file-select-name" *ngIf="excelFile" id="noFile" #content>
+                    {{excelFile.name}}
+                </div>
+                <input type="file" name="profile_image" id="chooseFile"  accept=".xlsx" (change)="onFileChange($event)" required>
+            </div>
+        </div>
+
+        <p style="color:red">{{showError}}</p>
+        <p style="color:green">{{showSuccess}}</p>
+        <button type="submit" value="Add User">
+            <span class="spinner-border spinner-border-sm mr-1" role="status" aria-hidden="true" *ngIf="loading"></span>
+            Upload File Button
+        </button>
+
+    </form>
+</ng-template>

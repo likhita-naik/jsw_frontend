@@ -1,0 +1,40 @@
+a{
+    color: black;
+    text-decoration: none;
+    
+}
+ngb-pagination ::ng-deep ul > li:not(.active) > a {
+    background-color:  #f8f8f8 !important;
+    border-radius: 5px !important;
+    box-shadow: none;
+  }
+  
+  ngb-pagination ::ng-deep ul > li.active > a {
+    background-color: hsl(212, 50%, 35%) !important;
+    border-radius: 5px!important;
+    box-shadow: none;
+
+  } 
+
+  .highlight{
+    background-color: rgba(69, 248, 191, 0.401);
+  }
+
+  /* table{
+    background: var(--bg-white) !important;
+  } */
+
+
+
+  table >tr > td{
+   /* display: flex; */
+
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+  }
+
+  table >tr > thead > th{
+    text-align: center;
+  }

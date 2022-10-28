@@ -1,0 +1,69 @@
+<div class="container-fluid dashboard-content">
+    <div class="page-header mb-3">
+        <h2>Camera Settings</h2>
+    </div>
+    <div class="card">
+        <div class="row col-12">
+            <div class="col-5 border-right">
+                <div id="formContent">
+                    <div style="font-family: 'Times New Roman', Times, serif;">
+                        <h3><b>Add ROI</b></h3>
+                    </div>
+                </div>
+                <h2>Upload Image</h2>
+                <button class="btn btn-dark-outline" (click)="selectRoiType(1)">Polygon</button>
+               
+                <h3>Right Click To Confirm Polygon</h3>
+
+                
+
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-between align-items-center">PPE
+                            <span>
+                                <div class="form-check form-switch d-inline-flex p-2">
+                                    <label class="form-check-label" for="flexSwitchCheckDefault">
+
+                                    </label>
+                                    <input class="form-check-input" [formControl]="PPEControl" type="checkbox"
+                                        click="return false" id="flexSwitchCheckDefault" readonly />
+                                </div>
+                            </span>
+                        </li>
+                        <li class="list-group-item mb-3">
+                            <h4>No man region list</h4>
+                            <div class="div">
+                                <ul class="list-group" *ngFor="let roi of roilistObject">
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{roi['roi_name']}}
+                                        <span class="float-right">
+                                            <fa-icon icon="edit" class="mr-2 font-custome"
+                                                (click)="EditPolygon(roi['roi_name'])" style="cursor: pointer;">
+                                            </fa-icon>
+                                            <fa-icon icon="clipboard" class="font-custome mr-2 " (click)="copyCoords()"
+                                                style="cursor: pointer;"></fa-icon>
+                                            <fa-icon icon="trash" class="font-custome mr-2"
+                                                (click)="       DeleteRoi(roi['roi_name'])" style="cursor: pointer;">
+                                            </fa-icon>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <!-- </div> -->
+            <div class="col-6" id="canvasContainer">
+                <button class="btn btn-custome mr-2" *ngIf="isPolygonDrawn" (click)="savepolygon()">Save
+                    polygon</button>
+                <button class="btn btn-custome" *ngIf="isPolygonDrawn" (click)="clearPolygon()">Delete polygon</button>
+                <canvas id="canvasID" width="100%" height="100%" style="border: 1px solid black;"></canvas>
+
+
+            </div>
+        </div>
+    </div>
+
+
+</div>

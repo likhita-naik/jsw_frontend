@@ -1,0 +1,39 @@
+#dateSpan input{
+    border: none;
+}
+#dateSpan input:focus{
+    border: none !important;
+    box-sizing:unset !important;
+    box-shadow: none !important;
+    outline: none !important;
+    border-radius:5px;
+    
+    
+}
+#dateSpan input::placeholder{
+    color:rgba(178, 174, 174, 0.75)
+}
+
+.statusGrid{
+    width: 100%;
+    position:relative;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+   
+}
+.statusGrid h1:hover{
+    border-bottom: 2px solid var(primary-color);
+    cursor: pointer;
+
+}
+
+#cameraStatus .card{
+    max-height: 150px;
+    min-height: 150px;
+
+}
+.iconImage{
+    width: 5em;
+    height: 5em;
+    object-fit: cover;
+}

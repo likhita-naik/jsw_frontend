@@ -1,0 +1,16 @@
+.card.analytics{
+   min-height: 120px;
+   min-height: 120px;
+
+  text-overflow: clip;
+  overflow-x: hidden;
+   
+ }
+#panel input{
+   padding: 5px;
+   border: 1px solid gainsboro;
+}
+
+#panel input:focus{
+   box-shadow: none;
+}

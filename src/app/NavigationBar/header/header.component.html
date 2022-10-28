@@ -1,0 +1,20 @@
+<nav class="bg-header  fixed-top">
+ <div class="col-12">
+    <div class="float-end p-3">
+      <ul class="navbar-nav me-auto">
+         <li class="nav-item dropdown" ngbDropdown>
+           <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle>
+             <fa-icon icon="user-circle" flip="horizontal" size="lg" class="text-brand"></fa-icon>
+           </a>
+           <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
+           
+             <a class="dropdown-item p-2"  (click)="Logout()" >
+               <fa-icon icon="power-off" class="me-2"></fa-icon>Logout
+             </a>
+
+           </div>
+         </li>
+       </ul>    
+      </div>
+ </div>
+</nav>
